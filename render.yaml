@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: selfie-relay
+    runtime: python
+    plan: free
+    region: frankfurt          # ou oregon / singapore selon ta cible
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn flask_app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120
+    healthCheckPath: /api/status
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: FLASK_ENV
+        value: production
+    autoDeploy: true
